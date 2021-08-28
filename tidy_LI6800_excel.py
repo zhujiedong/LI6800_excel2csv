@@ -68,7 +68,7 @@ def tidy_data():
         app.quit()
         d = pd.read_excel(excel_no_formula[i], header=header_start)
         d = d[1:]
-        d.to_csv(csv_finally[i])
+        d.to_csv(csv_finally[i], index = False)
         print("success, the number of files transformed until now：{} \n".format(i+1))
     print("completed，the total number of files transformed：**{}**".format(len(excel_with_formula)))
     print("close the Window to quit")
