@@ -12,9 +12,7 @@ First you should install python on your computer, there are plenty of guides on 
 
 ## How to use
 
-If you have all the dependencies installed, you can simply run the program `tidy_LI6800_excel.py`,.
-
-
+If you have all the dependencies installed, you can simply run the program `tidy_LI6800_excel.py`, If you could read Chinese, you can also download an exe file from https://www.aliyundrive.com/s/kJ71VwonJs2 :
 
 [![hlKehV.png](https://z3.ax1x.com/2021/08/27/hlKehV.png)](https://imgtu.com/i/hlKehV)
 
