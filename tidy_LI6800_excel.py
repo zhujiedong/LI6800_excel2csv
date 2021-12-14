@@ -4,88 +4,79 @@ import xlwings as xw
 from tkinter import *
 from tkinter import filedialog
 
-
 root = Tk()
-root.title("LI-6800 数据整理")
 
-# path of your LI-6800 data FOLDER
+root.geometry('410x100')
+root.title("tidy LI-6800 excel data")
+
+# path entry variable
 path = StringVar()
-# the header row of your meansurement data
-data_start = IntVar()
+data_start = StringVar()
 
-
-# function for choose the parent directory where your data folder lies
+#  define path select function
 def select_path():
     path_ = filedialog.askdirectory()
     path.set(path_)
 
-# main function for data tidy
+# main fucntion
 def tidy_data():
-    data_folder=[]
-    #!  get the path of data and header
-    dir_get = path.get() # data folder
-    header_start = data_start.get()
-    parent_folder = os.path.join(dir_get, "..") # parent folder of data folder
-    excel_files = os.listdir(dir_get) # get all the data files
-    for i in excel_files:
+    list_excel_data=[]
+    #!  set the data folder
+    dir_get = path.get()
+    list_folder = os.listdir(dir_get)
+    for i in list_folder:
         if os.path.splitext(i)[1] == ".xlsx":
-            print (i)
-            data_folder.append(i)
+            #print (i)
+            list_excel_data.append(i)
     
-    no_formula = "data_without_formula"
+    # csv data folder name
     csv_data = "final_csv_data"
-    no_form_dir = os.path.join(parent_folder, no_formula)
-    csv_dir = os.path.join(parent_folder, csv_data)
-
-    if not os.path.exists(no_form_dir):
-        try:
-            os.mkdir(no_form_dir)
-        except:
-            print("create temparay folder failed for excel data without formula")
+    # csv data folder path
+    csv_dir = os.path.join(dir_get, csv_data)
 
     if not os.path.exists(csv_dir):
         try:
             os.mkdir(csv_dir)
         except:
-            print("create final csv folder failed")
+            print("create folder failed")
 
     # prepare excel and csv names for the output data
-    excel_no_formula  = [os.path.join(no_form_dir, i) for i in data_folder]
-    excel_with_formula = [os.path.join(dir_get, i) for i in data_folder]
-    csv_finally =  [os.path.join(csv_dir, i).replace("xlsx", "csv") for i in data_folder]
+    excel_with_formula = [os.path.join(dir_get, i) for i in list_excel_data]
+    csv_finally =  [os.path.join(csv_dir, i).replace("xlsx", "csv") for i in list_excel_data]
 
-    for i in range(len(excel_with_formula)):
-    # read all the excel file with formula by xlwings
-        print("transforming：{}......".format(data_folder[i]))
-        app=xw.App(visible=True,add_book=False)
-        wb = app.books.open(excel_with_formula[i])
-        sheet1 = wb.sheets[0].used_range.value
-        # convert all the data to pandas dataframe
-        df = pd.DataFrame(sheet1)
-        # save excel files without formula
-        df.to_excel(excel_no_formula[i], header = False, index = False)
-        wb.close()
-        app.quit()
-        d = pd.read_excel(excel_no_formula[i], header=header_start)
-        d = d[1:]
-        d.to_csv(csv_finally[i], index = False)
-        print("success, the number of files transformed until now：{} \n".format(i+1))
-    print("completed，the total number of files transformed：**{}**".format(len(excel_with_formula)))
-    print("close the Window to quit")
+    for i in range(len(csv_finally)):
+    # read all excel files data and convert it to dataframe
+        try:
+            print("tidy data now：{}......".format(list_excel_data[i]))
+            app=xw.App(visible=True,add_book=False)
+            wb = app.books.open(excel_with_formula[i])
+            # convert excel data to dataframe
+            sheet1 = wb.sheets[0].used_range.value
+            df = pd.DataFrame(sheet1)
+            app.quit()
+            # read the obs row no.
+            row_obs = df[df.iloc[:, 0] == 'obs'].index.tolist()[0]
+            # convert to header
+            df_header = df.iloc[row_obs, :].tolist()
+            df_data = df.iloc[(row_obs+2):, :]
+            df_data.columns = df_header
+            # save to csf data directly
+            df_data.to_csv(csv_finally[i], index = False)
+
+            print("convert current files successfully，now the no. of data files converted are：**{}** \n".format(i+1))
+        except:
+            print("convert failed, may be there are temparary files exists")
+    print("convert all files successfully, toltal files converted are ：{}".format(len(excel_with_formula)))
+    print("close the window to quit")
 
 
+# 定义工作目录-----------------------------------------
 
-Label(root, text = "LI-6800 data folder：").grid(row = 0, column = 0)
+Label(root, text = "Data folder：").grid(row = 0, column = 0)
 dir = Entry(root, textvariable = path)
 dir.grid(row = 0, column = 1)
-Button(root, text="Choose folder",command=select_path).grid(row = 0, column = 2)
+Button(root, text="Choose the data folder",command=select_path).grid(row = 0, column = 2)
 
-Label(root, text = "The row of header：").grid(row = 1, column = 0)
-data_start_line = Entry(root, textvariable = data_start)
-data_start_line.grid(row = 1, column = 1)
-data_start_line.delete(0, "end")
-data_start_line.insert(0, "13")
-
-Button(root, text="Run program",command=tidy_data).grid(row = 2, column = 1)
+Button(root, text="Run LI-6800 Excel Converter",command=tidy_data).grid(row = 2, column = 1)
 
 root.mainloop()

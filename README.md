@@ -8,39 +8,12 @@ There are some very helpful packages for dealing with [LI-6800](https://www.lico
 
 ## Dependencies
 
-First you should install python on your computer, there are plenty of guides on the Internet. The only library need to be installed is `xlwings`, you can learn the basics from [xlwings](https://docs.xlwings.org/en/stable/).  
+First you should install python on your computer, there are plenty of guides on the Internet. The only library need to be installed additionally are `xlwings` and `pandas`, you can learn the basics from [xlwings](https://docs.xlwings.org/en/stable/).  
 
 ## How to use
 
-If you have all the dependencies installed, you can simply run the program `tidy_LI6800_excel.py`, If you could read Chinese, you can also download an exe file from https://www.aliyundrive.com/s/kJ71VwonJs2 :
+click 'Choose the data folder' to choose the file which you store your LI-6800 excel data files, and then click 'Run LI-6800 Excel Converter' to run the program, after it is finished as indicated by the terminal, you can find your csv files in a folder called 'final-csv-data' in the folder of LI-6800 excel data files.
 
-[![hlKehV.png](https://z3.ax1x.com/2021/08/27/hlKehV.png)](https://imgtu.com/i/hlKehV)
+if you can read Chinese, just download a exe program that I already packaged without run the program from beginning.
 
-### Choose your data folder
-
-You should place all your data to a folder, the folder should **only contain LI-6800 data files**. Though the program is meant to tidy the excel files, you could still include the raw data files in it. For example, my data are in a folder called `6800exceldata`, and I put the data folder in a folder called `test6800`, because I just do not want mess up other folders that already have files and folders.
-
-[![hlKZt0.png](https://z3.ax1x.com/2021/08/27/hlKZt0.png)](https://imgtu.com/i/hlKZt0)
-
-### confirm your data header
-
-In the example data, the header is in row 15, but the first row is empty and python starts from zero, so we use 13 here, you must confirm the row with your own data
-
-[![hlKVkq.png](https://z3.ax1x.com/2021/08/27/hlKVkq.png)](https://imgtu.com/i/hlKVkq)
-
-
-
-
-
-[![hlKk0s.png](https://z3.ax1x.com/2021/08/27/hlKk0s.png)](https://imgtu.com/i/hlKk0s)
-
-
-
-Wait until the program finished, 
-
-[![hlKA7n.png](https://z3.ax1x.com/2021/08/27/hlKA7n.png)](https://imgtu.com/i/hlKA7n)
-
-then you can get your data in the `final_csv_data` folder
-
-[![hlKFmj.png](https://z3.ax1x.com/2021/08/27/hlKFmj.png)](https://imgtu.com/i/hlKFmj)
-
+[LI-6800-CSV](https://www.aliyundrive.com/s/FPcqSoUfYQJ)
